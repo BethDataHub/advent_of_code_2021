@@ -1,0 +1,23 @@
+horizontal = 0
+depth = 0
+aim = 0
+
+for entry in open('Input.csv'):
+    entry = entry.split(' ')
+    direction = entry[0]
+    amount = int(entry[1])
+
+    match direction:
+        case "forward":
+            horizontal +=  amount
+            depth += aim*amount
+        case "up":
+            aim -= amount
+        case "down":
+            aim += amount
+        
+print(horizontal*depth)
+
+
+
+

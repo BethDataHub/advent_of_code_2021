@@ -1,0 +1,24 @@
+#Number of letters in each visual number
+class lines:
+    zero = 6
+    one = 2
+    two = 5
+    three = 5
+    four = 4
+    five = 5
+    six = 6
+    seven = 3
+    eight = 7
+    nine = 6
+
+x=0
+for entry in open('Input.txt'):
+    entry = entry.split("|")
+    signalPattern = entry[0]
+    output = entry[1].split(" ")
+
+    for value in output:
+        value = value.strip()
+        if len(value) in [lines.one,lines.four,lines.seven,lines.eight]:
+            x+=1
+print(x)

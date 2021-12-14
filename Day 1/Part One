@@ -1,0 +1,11 @@
+import csv
+
+curr = 0
+prev = 0
+
+for line in open('Input.csv'):
+	i = int(line.strip())
+	if prev and i > prev:
+		curr += 1
+	prev = i
+print(curr)

@@ -1,0 +1,68 @@
+with open("input.txt") as f:
+    data = f.readlines()
+
+x = []
+y = []
+
+def get_board():
+    for line in data:
+        p1, p2 = line.split(" -> ")
+
+        x1, x2 = p1.split(',')[0], p2.split(',')[0]
+        y1, y2 = p1.split(',')[1], p2.split(',')[1]
+
+        ##append co-ordinates to list to get board size
+        if x1 > x2:
+            x.append(int(x1))
+        else:
+            x.append(int(x2))
+
+        if y1 > y2:
+            y.append(int(y1))
+        else:
+            y.append(int(y2))
+
+    boardx = max(x)+1
+    boardy = max(y)+1
+
+    board = []
+    board = [[0 for x in range(boardx)] for y in range(boardy)]
+
+    return board
+
+board = get_board()
+
+for line in data:
+    p1, p2 = line.split(" -> ")
+    x1, x2 = int(p1.split(',')[0]), int(p2.split(',')[0])
+    y1, y2 = int(p1.split(',')[1]), int(p2.split(',')[1])
+
+    if x1==x2 or y1==y2: 
+        if x1 < x2:
+            x = x1
+            while x <= x2:
+                board[x][y1] +=1
+                x+=1
+        elif x1 > x2:
+            x = x1
+            while x >= x2:
+                board[x][y1] +=1
+                x-=1
+        if y1 < y2:
+            y = y1
+            while y <= y2:
+                board[x1][y] +=1
+                y+=1
+        elif y1 > y2:
+            y = y1
+            while y >= y2:
+                board[x1][y] +=1
+                y-=1
+
+over = 0    
+for array in board:
+    for num in array:
+        if (num != 1) and (num != 0):
+            over += 1
+print(over)
+

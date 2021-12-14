@@ -1,0 +1,9 @@
+import csv
+
+count = 0
+x = [int(x) for x in open('Input.csv')]
+
+for i in range(len(x)):
+    if x[i]+x[i-1]+x[i-2] > x[i-1]+x[i-2]+x[i-3]:
+        count += 1
+print(count)

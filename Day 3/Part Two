@@ -1,0 +1,62 @@
+a = []
+b = []
+x = 0
+
+list = []
+for entry in open('Input.csv'):
+    list.append(str(entry).strip())
+
+while x < 12:
+    a.clear()
+    
+    for entry in list:
+        output = int(entry[x])
+        a.append(output)
+    
+    if a.count(1) == a.count(0):
+        b.append('1') 
+    elif a.count(1) > a.count(0):
+        b.append('1')
+    else:
+        b.append('0')
+    mostCommon = str(''.join(str(b).replace(', ','').replace(']','').replace('[','')))
+    mostCommon = mostCommon.replace("'","")
+    list = [i for i in list if i.startswith(mostCommon)]
+    if len(list)==1:
+        break
+    x+=1
+oxygen = ''.join(list)
+
+list = []
+x = 0
+b.clear()
+for entry in open('Input.csv'):
+    list.append(str(entry).strip())
+
+while x < 12:
+    a.clear()
+    
+    for entry in list:
+        output = int(entry[x])
+        a.append(output)
+    
+    if a.count(1) == a.count(0):
+        b.append('0')
+    elif a.count(1) > a.count(0):
+        b.append('0')
+    else:
+        b.append('1')
+    leastCommon = str(''.join(str(b).replace(', ','').replace(']','').replace('[','')))
+    leastCommon = leastCommon.replace("'","")
+    list = [i for i in list if i.startswith(leastCommon)]
+    if len(list)==1:
+        break
+    x+=1
+co2 = ''.join(list)
+
+
+
+oxygen=int(oxygen,2)
+co2=int(co2,2)
+
+print(oxygen*co2)

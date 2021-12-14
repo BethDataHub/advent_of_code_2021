@@ -1,0 +1,89 @@
+class codes:
+    #Number of letters in each visual number
+    zero = 6
+    one = 2
+    two = 5
+    three = 5
+    four = 4
+    five = 5
+    six = 6
+    seven = 3
+    eight = 7
+    nine = 6
+
+
+sEncoded = []
+fEncoded = []
+
+answers = []
+
+for entry in open('Input.txt'):
+    answer = []
+
+    entry = entry.split("|")
+    signalPattern = entry[0].split(" ")
+    output = entry[1].split(" ")
+
+    for signal in signalPattern[0:10]:
+        length = len(signal)
+        if length == codes.eight:
+            eightEncoded = [char for char in signal]
+        if length == codes.one:
+            oneEncoded = [char for char in signal]
+        if length == codes.four:
+            fourEncoded = [char for char in signal]
+        if length == codes.seven:
+            sevenEncoded = [char for char in signal]
+        if length == 6:
+            sEncoded.append(signal)
+        if length == 5:
+            fEncoded.append(signal)
+
+
+    for record in sEncoded:
+        record = [char for char in record]
+        if len(set(record)&set(fourEncoded)) == len(fourEncoded):
+            nineEncoded = record
+        elif len(set(record)&set(oneEncoded)) == len(oneEncoded):
+            zeroEncoded = record
+        else:
+            sixEncoded = record
+
+    for record in fEncoded:
+        record = [char for char in record]
+        if len(set(record)&set(oneEncoded)) == len(oneEncoded):
+            threeEncoded = record
+        elif len(set(record)&set(nineEncoded)) == len(nineEncoded)-1:
+            fiveEncoded = record
+        else:
+            twoEncoded = record
+    
+    for out in output:
+        length = len(out.strip())
+        match length:
+            case codes.one:
+                answer.append(1)
+            case codes.four:
+                answer.append(4)
+            case codes.seven:
+                answer.append(7)
+            case 5:
+                if len(set(out)&set(fiveEncoded)) == len(fiveEncoded):
+                    answer.append(5)
+                elif len(set(out)&set(threeEncoded)) == len(threeEncoded):
+                    answer.append(3)
+                else:
+                    answer.append(2)
+            case 6:
+                if len(set(out)&set(nineEncoded)) == len(nineEncoded):
+                    answer.append(9)
+                elif len(set(out)&set(zeroEncoded)) == len(zeroEncoded):
+                    answer.append(0)
+                else:
+                    answer.append(6)
+            case codes.eight:
+                answer.append(8)
+    answer = int(''.join(str(answer)).replace(",","").replace(" ","").replace("]","").replace("[",""))
+    answers.append(answer)
+
+print(sum(answers))

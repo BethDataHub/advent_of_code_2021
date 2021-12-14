@@ -1,0 +1,19 @@
+import csv
+
+horizontal = 0
+depth = 0
+
+for entry in open('Input.csv'):
+    entry = entry.split(' ')
+    direction = entry[0]
+    amount = int(entry[1])
+
+    if direction == "forward":
+        horizontal += amount
+    elif direction == "up":
+        depth -= amount
+    else:
+        depth += amount
+
+print(horizontal,depth)
+print(horizontal*depth)

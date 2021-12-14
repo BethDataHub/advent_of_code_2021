@@ -1,0 +1,54 @@
+def create_cave():
+    paths = []
+    entrylength = 0
+    
+    for entry in open('input.txt'):
+        path=[]
+        entry=entry.strip()
+        for point in entry:
+            path.append(point)
+        paths.append(path)
+        entrylength+=1
+        pathlength = len(path)
+    return paths,entrylength,pathlength
+
+paths,entrylength,pathlength = create_cave()
+
+def get_lowpoints():
+    lowpoints = []
+    risk = []
+    startcoord = []
+    for entry in range(entrylength):
+        for point in range(pathlength):
+
+            start = int(paths[entry][point])
+            if point-1 >= 0:
+                left = int(paths[entry][point-1])
+            else: 
+                left = start+10
+
+            if point < pathlength-1:
+                right = int(paths[entry][point+1])
+            else: 
+                right = start+10
+
+            if entry-1 >=0:
+                up = int(paths[entry-1][point])
+            else:
+                up = start+10
+
+            if entry < entrylength-1:
+                down = int(paths[entry+1][point])
+            else: 
+                down = start+10
+
+            directions = [left,right,up,down]
+
+            if (all(x > start for x in directions)):
+                lowpoints.append(start)
+                risk.append(start+1)
+                startcoord.append([entry,point])
+    return lowpoints,risk, startcoord
+lowpoints,risk,startcoord = get_lowpoints()
+
+print(sum(risk))

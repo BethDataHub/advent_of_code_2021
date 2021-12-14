@@ -1,0 +1,65 @@
+opening = ['(','[','{','<']
+closing = [')',']','}','>']
+
+curve = ['(',')']
+square = ['[',']']
+squiggle = ['{','}']
+triangle = ['<','>']
+
+class p1scoring:
+    curved = 3
+    squared = 57
+    squiggled = 1197
+    triangle = 25137
+
+def Part_One():
+
+    returned = []
+    corrupted = []
+    for entry in open('input.txt'):
+        test = list(entry)
+
+        opens = []
+        opensindex=[]
+        ends=[]
+
+        for i, _ in enumerate(test):
+            if _ in opening:
+                opens.append(_)
+                if _ == curve[0]:
+                    ends.insert(0,curve[1])
+                elif _ == square[0]:
+                    ends.insert(0,square[1])
+                elif _ == squiggle[0]:
+                    ends.insert(0,squiggle[1])
+                elif _ == triangle[0]:
+                    ends.insert(0,triangle[1])
+                else:
+                    "Unable to match symbol"
+            if _ in closing:
+                if _ != ends[0]:
+                    returned.append(_)
+                    corrupted.append(test)
+                    break
+                else:
+                    ends.pop(0)
+    return returned, corrupted
+
+returned, corrupted = Part_One()
+
+def p1_scoring():
+    answer = []
+    for _ in returned:
+        match _:
+            case ')':
+                answer.append(p1scoring.curved)
+            case ']':
+                answer.append(p1scoring.squared)
+            case '}':
+                answer.append(p1scoring.squiggled)
+            case '>':
+                answer.append(p1scoring.triangle)
+    return answer
+
+answer = p1_scoring()
+print(sum(answer))

@@ -1,0 +1,150 @@
+from os import path
+
+
+def create_cave():
+    paths = []
+    entrylength = 0
+    
+    for entry in open('input.txt'):
+        path=[]
+        entry=entry.strip()
+        for point in entry:
+            path.append(point)
+        paths.append(path)
+        entrylength+=1
+        pathlength = len(path)
+    return paths,entrylength,pathlength
+
+paths,entrylength,pathlength = create_cave()
+
+
+def get_lowpoints():
+    lowpoints = []
+    risk = []
+    startcoord = []
+    for entry in range(entrylength):
+        for point in range(pathlength):
+
+            start = int(paths[entry][point])
+            if point-1 >= 0:
+                left = int(paths[entry][point-1])
+            else: 
+                left = start+10
+
+            if point < pathlength-1:
+                right = int(paths[entry][point+1])
+            else: 
+                right = start+10
+
+            if entry-1 >=0:
+                up = int(paths[entry-1][point])
+            else:
+                up = start+10
+
+            if entry < entrylength-1:
+                down = int(paths[entry+1][point])
+            else: 
+                down = start+10
+
+            directions = [left,right,up,down]
+
+            if (all(x > start for x in directions)):
+                lowpoints.append(start)
+                risk.append(start+1)
+                startcoord.append([entry,point])
+    return lowpoints,risk, startcoord
+lowpoints,risk,startcoord = get_lowpoints()
+
+
+answers = []
+for i, sc in enumerate(startcoord):
+    x = sc[0]
+    y = sc[1]
+
+    answer = 0
+    newcoords=[[x,y]]
+    helper = i+1
+    counter = int('-'+str(helper))
+
+    for coord in newcoords:
+        x1 = coord[0]
+        y1 = coord[1]
+        ##left
+        while y > 0:
+            y-=1
+            if int(paths[x][y]) != 9 and int(paths[x][y]) != counter:
+                paths[x][y]=counter
+                answer+=1
+                if x > 0:
+                    if int(paths[x-1][y]) != 9  and int(paths[x-1][y]) != counter:
+                        newcoords.append([x-1,y])
+                if x < entrylength-1:
+                    if int(paths[x+1][y]) != 9  and int(paths[x+1][y]) != counter:
+                        newcoords.append([x+1,y])
+            else: break
+        x = x1
+        y = y1
+
+        ##right
+        while y < pathlength-1:
+            y+=1
+            if int(paths[x][y]) != 9 and int(paths[x][y]) != counter:
+                paths[x][y]=counter
+                answer+=1
+                if x > 0:
+                    if int(paths[x-1][y]) != 9 and int(paths[x-1][y]) != counter:
+                        newcoords.append([x-1,y])
+                if x < entrylength-1:
+                    if int(paths[x+1][y]) != 9 and int(paths[x+1][y]) != counter:
+                        newcoords.append([x+1,y])
+            else: break
+        x = x1
+        y = y1
+
+        ##up
+        while x > 0:
+            x-=1
+            if int(paths[x][y]) != 9 and int(paths[x][y]) != counter:
+                paths[x][y]=counter
+                answer+=1
+                if y > 0:
+                    if int(paths[x][y-1]) != 9 and int(paths[x][y-1]) != counter:
+                        newcoords.append([x,y-1])
+                if y < pathlength-1:
+                    if int(paths[x][y+1]) != 9 and int(paths[x][y+1]) != counter:
+                        newcoords.append([x,y+1])
+            else: break
+        x = x1
+        y = y1
+
+        ##down
+        while x < entrylength-1:
+            x+=1
+            if int(paths[x][y]) != 9 and int(paths[x][y]) != counter:
+                paths[x][y]=counter
+                answer+=1
+                if y > 0:
+                    if int(paths[x][y-1]) != 9 and int(paths[x][y-1]) != counter:
+                        newcoords.append([x,y-1])
+                if y < pathlength-1:
+                    if int(paths[x][y+1]) != 9 and int(paths[x][y+1]) != counter:
+                        newcoords.append([x,y+1])
+            else: break
+        x = x1
+        y = y1
+
+        paths[x1][y1]=counter
+
+
+    answ = []
+    for path in paths:
+        ans = path.count(counter)
+        answ.append(ans)
+    answer = sum(answ)
+    answers.append(answer)
+sorted = sorted(answers, reverse=True)[:3]
+unsorted = []
+for a in answers:
+    if a in sorted:
+        unsorted.append(a)
+print(unsorted[0]*unsorted[1]*unsorted[2])
